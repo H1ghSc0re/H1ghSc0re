@@ -1,4 +1,4 @@
-class "H1ghSc0re Thresh"
+class "H1ghSc0reThresh"
 
 function Thresh:__init()
 	if myHero.charName ~= "Thresh" then 

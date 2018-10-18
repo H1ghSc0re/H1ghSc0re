@@ -1,6 +1,6 @@
-class "H1ghSc0re Morgana"
+class "H1ghSc0reMorgana"
 
-function H1ghSc0re Morgana:__init()
+function H1ghSc0reMorgana:__init()
 	
 
     self.spellNames = {
@@ -66,8 +66,8 @@ function H1ghSc0re Morgana:__init()
 	}
 end
 
-function H1ghSc0re Morgana:LoadMenu()
-	self.Menu = MenuElement({type = MENU, id = "H1ghSc0re Morgana", name = "Morgana", leftIcon = "https://i.imgur.com/eUHpdu8.png"})
+function H1ghSc0reMorgana:LoadMenu()
+	self.Menu = MenuElement({type = MENU, id = "H1ghSc0reMorgana", name = "Morgana", leftIcon = "https://i.imgur.com/eUHpdu8.png"})
 	self.Menu:MenuElement({type = MENU, id = "Combo", name = "Combo"})
 	self.Menu.Combo:MenuElement({id = "Hotkey", name = "Q Hotkey - Wait for AA/Spell", key = 0x5a, toggle = true, value = false})
 	self.Menu.Combo:MenuElement({id = "ComboQ", name = "Use Q", value = true})
@@ -84,14 +84,14 @@ function H1ghSc0re Morgana:LoadMenu()
 	
 end
 
-function H1ghSc0re Morgana:LoadSpells()
+function H1ghSc0reMorgana:LoadSpells()
 	Q = {Range = 850, Delay = myHero:GetSpellData(_Q).delay, Radius = 235, Speed = myHero:GetSpellData(_Q).speed}
 	W = {Range = 900, Delay = myHero:GetSpellData(_W).delay, Radius = 275, Speed = 0}
 	E = {Range = 800, Delay = myHero:GetSpellData(_E).delay, Radius = 0, Speed = 0}
 	R = {Range = 625, Delay = myHero:GetSpellData(_R).delay, Radius = myHero:GetSpellData(_R).radius, Speed = 0}
 end
 
-function H1ghSc0re Morgana:xPath(unit)
+function H1ghSc0reMorgana:xPath(unit)
 	local hero = unit
 	local path = hero.pathing
 	local path_vec
@@ -107,15 +107,15 @@ function H1ghSc0re Morgana:xPath(unit)
 		return path_vec
 end
 
-function H1ghSc0re Morgana:IsValidTarget(unit,range)
+function H1ghSc0reMorgana:IsValidTarget(unit,range)
 	return unit ~= nil and unit.valid and unit.visible and not unit.dead and unit.isTargetable and not unit.isImmortal and unit.pos:DistanceTo(myHero.pos) <= range
 end
 
-function H1ghSc0re Morgana:CanUseSpell(spell)
+function H1ghSc0reMorgana:CanUseSpell(spell)
 	return myHero:GetSpellData(spell).currentCd == 0 and myHero:GetSpellData(spell).level > 0 and myHero:GetSpellData(spell).mana <= myHero.mana
 end
 
-function H1ghSc0re Morgana:Buffs(unit, buffname)
+function H1ghSc0reMorgana:Buffs(unit, buffname)
 	
 
 	local textPos2 = unit.pos:To2D()
@@ -138,7 +138,7 @@ function H1ghSc0re Morgana:Buffs(unit, buffname)
 end
 
 local timer = {start = 0, tick = GetTickCount()} 
-function H1ghSc0re Morgana:Timer(mindelay, maxdelay)
+function H1ghSc0reMorgana:Timer(mindelay, maxdelay)
 	local ticker = GetTickCount()
 	if timer.start == 0 then
 		timer.start = 1
@@ -156,7 +156,7 @@ function H1ghSc0re Morgana:Timer(mindelay, maxdelay)
 
 end
 
-function  H1ghSc0re Morgana:Check(target)
+function  H1ghSc0reMorgana:Check(target)
 	if self:Buffs(target, "darkbindingmissle") == false then 
 		if self.predictionModified.dodger == false then
 			self.predictionModified.dodger = true 
@@ -168,7 +168,7 @@ function  H1ghSc0re Morgana:Check(target)
 	end
 end
 
-function H1ghSc0re Morgana:Prediction(unit)
+function H1ghSc0reMorgana:Prediction(unit)
 
 	local target = unit
 
@@ -189,14 +189,14 @@ function H1ghSc0re Morgana:Prediction(unit)
 
 end
 
-function H1ghSc0re Morgana:AutoW()
+function H1ghSc0reMorgana:AutoW()
 	local target =  (_G.GOS and _G.GOS:GetTarget(1000,"AD"))
 	if self:IsValidTarget(target, W.Range) and self:IsReady(_W) and self:IsSnared(target) then
 		Control.CastSpell(HK_W, target.pos2D.x + 30, target.pos2D.y - 20)
 	end
 end
 
-function H1ghSc0re Morgana:IsSnared(unit)
+function H1ghSc0reMorgana:IsSnared(unit)
 	for i = 0, unit.buffCount do
 			if unit:GetBuff(i).type == 11 or unit:GetBuff(i).type == 5 then
 				return true
@@ -205,11 +205,11 @@ function H1ghSc0re Morgana:IsSnared(unit)
 	return false
 end
 
-function H1ghSc0re Morgana:IsReady (spell)
+function H1ghSc0reMorgana:IsReady (spell)
 	return Game.CanUseSpell(spell) == 0 
 end
 
-function H1ghSc0re Morgana:AutoE()
+function H1ghSc0reMorgana:AutoE()
 	if self:IsReady(_E) then
 		local threat
 		for i = 1, Game.HeroCount() do
@@ -227,7 +227,7 @@ function H1ghSc0re Morgana:AutoE()
 	end
 end
 
-function H1ghSc0re Morgana:SearchForDash(unit)
+function H1ghSc0reMorgana:SearchForDash(unit)
 	for i, k in ipairs (self.dashAboutToHappend) do
 		if unit.activeSpell.name:lower() == k.name then
 			self.ShootDelay[unit.charName] = k.duration
@@ -236,7 +236,7 @@ function H1ghSc0re Morgana:SearchForDash(unit)
 	end
 end
 local timeDash = 0
-function H1ghSc0re Morgana:StartQ()
+function H1ghSc0reMorgana:StartQ()
 	local target = (_G.GOS and _G.GOS:GetTarget(1000,"AD"))
 	if target == nil or self:IsValidTarget(target,1000) == false then return 
 	end
@@ -262,7 +262,7 @@ function H1ghSc0re Morgana:StartQ()
 end
 
 local timer = {state = 0, tick = GetTickCount(), casting = GetTickCount() - 1000, mouse = mousePos}
-function H1ghSc0re Morgana:fast(spell, unit, prediction, delay)
+function H1ghSc0reMorgana:fast(spell, unit, prediction, delay)
 	if unit == nil then 
 		return 
 	end
@@ -309,7 +309,7 @@ function H1ghSc0re Morgana:fast(spell, unit, prediction, delay)
 	end
 end
 
-function H1ghSc0re Morgana:Draw()
+function H1ghSc0reMorgana:Draw()
 	
 	local text2d = myHero.pos:To2D()
 	if self.Menu.Combo.Hotkey:Value() then
@@ -348,5 +348,5 @@ function H1ghSc0re Morgana:Draw()
 end
 
 function OnLoad()
-	H1ghSc0re Morgana()
+	H1ghSc0reMorgana()
 end
